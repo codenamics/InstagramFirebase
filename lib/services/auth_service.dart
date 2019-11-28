@@ -29,7 +29,12 @@ class AuthService {
     _auth.signOut();
     Navigator.pushReplacementNamed(context, LoginScreen.routeName);
   }
-  static void login(String email, String password){
-    _auth.signInWithEmailAndPassword(email: email, password: password);
+  static void login(String email, String password) async{
+    try {
+      _auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      print(e);
+    }
+    
   }
 }
