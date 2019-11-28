@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
+import 'package:instagram_clone/services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   static final String routeName = 'signup-screen';
@@ -8,21 +9,23 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-    final _formKey = GlobalKey<FormState>();
-    String _name;
+  final _formKey = GlobalKey<FormState>();
+  String _name;
   String _email;
   String _password;
 
   _submit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      AuthService.signUpUser(context, _name, _email, _password);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-              child: Container(
+        child: Container(
           height: MediaQuery.of(context).size.height,
           child: Center(
             child: Column(
@@ -38,14 +41,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                       Padding(
+                      Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 30, vertical: 10),
                         child: TextFormField(
                           onSaved: (input) => _name = input,
-                          validator: (input) => input.trim().isEmpty
-                              ? 'Please enter name'
-                              : null,
+                          validator: (input) =>
+                              input.trim().isEmpty ? 'Please enter name' : null,
                           decoration: InputDecoration(labelText: 'Name'),
                         ),
                       ),
@@ -65,8 +67,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             horizontal: 30, vertical: 10),
                         child: TextFormField(
                           onSaved: (input) => _password = input,
-                          validator: (input) =>
-                              input.trim().isEmpty ? 'Password is missing' : null,
+                          validator: (input) => input.trim().isEmpty
+                              ? 'Password is missing'
+                              : null,
                           decoration: InputDecoration(labelText: 'Password'),
                           obscureText: true,
                         ),
